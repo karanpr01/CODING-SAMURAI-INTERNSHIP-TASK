@@ -22,7 +22,7 @@ const Navbar = () => {
                 Prem Karn
             </div>
 
-            <nav className='hidden md:flex space-x-6 text-sm font-medium'>
+            {/* <nav className='hidden md:flex space-x-6 text-sm font-medium'>
                 <a 
                 href="#about"
                 className='hover:text-blue-500 transition'
@@ -33,7 +33,7 @@ const Navbar = () => {
                 <a href="#contact"
                  className='hover:text-blue-500 transition'
                 >Contact</a>
-            </nav>
+            </nav> */}
 
             <Button
             variant="ghost"

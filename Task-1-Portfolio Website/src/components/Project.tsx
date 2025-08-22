@@ -4,36 +4,79 @@ import { Button } from "@/components/ui/button"
 
 const projects = [
   {
-    title: "QR Code Component",
-    image: "/projects/qrcode.png",
-    tags: ["HTML", "CSS"],
-    live: "https://qrcodecardcompo.netlify.app/",
-    github: "https://github.com/premkarn/qr-code-component",
+    title: "DevDocs",
+    image: "/Projects/devdocs-pk.png",
+    tags: ["HTML", "CSS","JS"],
+    live: "https://devdocs-pk.netlify.app/",
+    github: "https://github.com/karanpr01/DevDocs-pk",
   },
+
   {
     title: "Recipe Page",
-    image: "/projects/recipe.png",
-    tags: ["HTML", "CSS"],
+    image: "/Projects/recipe-page-main-pk.png",
+    tags: ["HTML", "CSS","Frontend Mentor"],
     live: "https://recipe-page-main-pk.netlify.app/",
-    github: "https://github.com/premkarn/recipe-page",
+    github: "https://github.com/karanpr01/Recipe-page",
   },
+
   {
-    title: "Calculator App",
-    image: "/projects/calculator.png",
-    tags: ["React", "JS"],
-    live: "https://calculatorapp-pk.netlify.app/",
-    github: "https://github.com/premkarn/calculator",
+    title: "Blog Perview card",
+    image: "/Projects/blog-preview-card.png",
+    tags: ["HTML", "CSS", "Frontend Mentor"],
+    live: "https://blog-preview-card05.netlify.app/",
+    github: "https://github.com/karanpr01/Blog-preview-card",
   },
+
   {
-    title: "Tic Tac Toe",
-    image: "/projects/tictactoe.png",
-    tags: ["React", "JS"],
-    live: "https://tictactoe-pk.netlify.app/",
-    github: "https://github.com/premkarn/tic-tac-toe",
+    title: "Product Card",
+    image: "/Projects/productcard-pk.png",
+    tags: ["HTML", "CSS","Frontend Mentor"],
+    live: "https://productcard-pk.netlify.app/",
+    github: "https://github.com/karanpr01/productcard",
   },
+
+  {
+    title: "DevFinder",
+    image: "/Projects/devfinder-pk.png",
+    tags: ["HTML", "CSS","JS"],
+    live: "https://devfinder-pk.netlify.app/",
+    github: "https://github.com/karanpr01/DevFinder",
+  },
+
+  {
+    title: "Habit Pulse",
+    image: "/Projects/habitpulse-pk.png",
+    tags: ["HTML", "CSS","JS"],
+    live: "https://habitpulse-pk.netlify.app/",
+    github: "https://github.com/karanpr01/habitpluse-pk",
+  },
+
+  {
+    title: "NewsNova",
+    image: "/Projects/newsnova-pk.png",
+    tags: ["HTML", "CSS","JS"],
+    live: "https://newsnova-pk.netlify.app/",
+    github: "https://github.com/karanpr01/newsnova",
+  },
+
+  {
+    title: "React Quiz",
+    image: "/Projects/Reactquiz.png",
+    tags: ["React", "TailwindCSS"],
+    live: "https://quizapp-pk.netlify.app/",
+    github: "https://github.com/karanpr01/react-Quiz",
+  },
+
+  {
+    title: "ToDo",
+    image: "/Projects/react-todo-pk.png",
+    tags: ["React", "TailwindCSS","Shadcn"],
+    live: "https://react-todo-pk.netlify.app/",
+    github: "https://github.com/karanpr01/React-Todo",
+  }
 ]
 
-const allTags = ["All", "HTML", "CSS", "JS", "React"]
+const allTags = ["All", "HTML", "CSS", "JS", "React","Frontend Mentor"]
 
 const Projects = () => {
   const [activeTag, setActiveTag] = useState("All")
@@ -47,7 +90,7 @@ const Projects = () => {
     <section id="projects" className="py-20 container px-20">
       <h2 className="text-3xl font-bold text-center mb-8">Projects</h2>
 
-      {/* Filter Buttons */}
+   
       <div className="flex flex-wrap justify-center gap-4 mb-10">
         {allTags.map((tag) => (
           <Button
@@ -60,7 +103,7 @@ const Projects = () => {
         ))}
       </div>
 
-      {/* Project Cards */}
+     
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProjects.map((project, index) => (
           <motion.div
@@ -68,7 +111,7 @@ const Projects = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: index * 0.6 }}
             className="border rounded-xl overflow-hidden shadow-md hover:shadow-lg bg-card"
           >
             <img src={project.image} alt={project.title} className="w-full h-48 object-cover" />

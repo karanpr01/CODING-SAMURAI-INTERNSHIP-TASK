@@ -7,7 +7,7 @@ const skills = [
     "HTML5",
     "CSS",
     "TailwinCSS",
-    "ShadCN/UI",
+    "Shadcn",
     "BootStrap",
     "Git",
     "GitHub"
