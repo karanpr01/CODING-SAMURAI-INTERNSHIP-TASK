@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+# Task-1: Portfolio Website  
+### Coding Samurai Internship
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live Demo
+Access the live site here: **[Portfolio Website Live Demo](https://portfolio-pk01.netlify.app/)**
 
-Currently, two official plugins are available:
+## Overview
+This personal portfolio project is built with **React** and **TypeScript** as part of the Coding Samurai Internship. It showcases professional projects, skills, and achievements with a modern, responsive design optimized for an excellent recruiter and developer experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **React + TypeScript**: Robust, scalable application architecture and static type safety for maintainable code.
+- **Shadcn UI**: Accessible, reusable UI components for rapid development and cohesive design.
+- **Tailwind CSS**: Utility-first styling for fast customization and effortless responsiveness.
+- **Framer Motion**: Smooth, professional animations to elevate user engagement across key sections.
 
-## Expanding the ESLint configuration
+## Features
+- **Responsive layout** for perfect display on all devices
+- **Dynamic navigation bar** and engaging section transitions
+- **Animated UI elements** powered by Framer Motion
+- **Showcase of projects, skills, and contact form** in dedicated sections
+- **Styled with Shadcn and Tailwind CSS** for clean modern visuals
+- **Downloadable resume** and direct contact options
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+Clone and run the project locally:
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+git clone https://github.com/karanpr01/CODING-SAMURAI-INTERNSHIP-TASK.git
+cd Task-1-Portfolio\ Website
+npm install
+npm run dev
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+Then visit `http://localhost:5173`.
+
+## Project Highlights
+- Completed for the prestigious Coding Samurai Internship, demonstrating commitment and advanced web skills.
+- Developed with a modular, scalable structure and clean code standards.
+- All UI/UX elements are performance-optimized and accessibility-compliant.
+
+## Future Improvements
+- Blog functionality and dynamic content integration
+- Enhanced accessibility features
+- Additional interactive sections and internationalization
+
+## Contact
+For feedback or inquiries, use the contact form on the live demo or open an issue in this repository.
+
+---
