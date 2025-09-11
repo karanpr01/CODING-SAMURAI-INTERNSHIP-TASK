@@ -8,7 +8,7 @@ export const Chatcontext = createContext();
 export const ChatProvider = ({ children }) => {
 
     const [messages, setMessages] = useState([]);
-    const [user, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [unseenMessages, setUnseenMessages] = useState({});
 
@@ -33,7 +33,7 @@ export const ChatProvider = ({ children }) => {
 
     const getMessages = async (userId) => {
         try {
-            const { data } = axios.get(`/api/messages/${userId}`);
+            const { data } = await axios.get(`/api/messages/${userId}`);
 
             if (data.success) {
                 setMessages(data.messages)
@@ -47,7 +47,7 @@ export const ChatProvider = ({ children }) => {
     // Function to send message to selected user
     const sendMessage = async (messageData) => {
         try {
-            const { data } = await axios.post(`/api/message/send/${selectedUser._id}`, messageData);
+            const { data } = await axios.post(`/api/messages/send/${selectedUser._id}`, messageData);
 
             if (data.success) {
                 setMessages((prevMessages) => [...prevMessages, data.newMessage])
@@ -89,10 +89,10 @@ export const ChatProvider = ({ children }) => {
 
     const value = {
         messages,
-        user,
+        users,
         selectedUser,
         getUsers,
-        setMessages,
+        getMessages,
         sendMessage,
         setSelectedUser,
         unseenMessages,
