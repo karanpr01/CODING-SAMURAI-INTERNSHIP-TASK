@@ -1,11 +1,31 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import assets, { messagesDummyData } from '../assets/assets'
 import { formatMessageTime } from '../lib/utils'
+import { Chatcontext } from '../../context/Chatcontext'
+import { AuthContext } from '../../context/AuthContext'
 
-const ChatContainer = ({selectedUser, setSelectedUser}) => {
+const ChatContainer = () => {
 
+  const {messges, selectedUser, setSelectedUser, sendMessage, getMessage} = useContext(Chatcontext)
+
+  const {authUser, onlineUsers } = useContext(AuthContext)
 
   const scrollEnd = useRef()
+
+  const [input, setInput] = useState('')
+
+  // Handle Sending a Message
+  const handelSendMessage = async (e) => {
+    e.preventDefault();
+
+    if(input.trim() === "") return null;
+
+    await sendMessage({text : input.trim()});
+    setInput('')
+  }
+
+  // Handle sending an image
+  const handleSendImage
 
   useEffect(() => {
     if(scrollEnd.current){
@@ -54,15 +74,15 @@ const ChatContainer = ({selectedUser, setSelectedUser}) => {
       <div className='absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3 '>
 
         <div className='flex-1  flex items-center bg-gray-100/12 px-3 rounded-full'>
-          <input type="text" placeholder='Send a Message' 
+          <input onChange={(e) => setInput(e.target.value)} value={input} onKeyDown={(e) => e.key === "Enter" ? handelSendMessage(e) : null} type="text" placeholder='Send a Message' 
           className='flex-1 text-sm border-none rounded-lg outline-none text-white  placeholder-gray-400 p-3' />
           <input type="file"  id="image" accept='image/png, image/jpeg' hidden />
           <label htmlFor="image">
-            <img src={assets.gallery_icon} alt="" className='w-5 mr-2 cursor-pointer'/>
+            <img osrc={assets.gallery_icon} alt="" className='w-5 mr-2 cursor-pointer'/>
           </label>
         </div>
 
-        <img src={assets.send_button} alt="" className='w-7 cursor-pointer' />
+        <img nClick={handelSendMessage} src={assets.send_button} alt="" className='w-7 cursor-pointer' />
       </div>
     </div>
   ):(

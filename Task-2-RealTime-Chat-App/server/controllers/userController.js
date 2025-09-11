@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
 
         const token = generateToken(newUser._id)
 
-        res.json({ success: true, userDate: newUser, token, message: "Account created Successfully" })
+        res.json({ success: true, userData: newUser, token, message: "Account created Successfully" })
 
     } catch (error) {
         console.log(error.message);
@@ -45,17 +45,21 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const userDate = await User.findOne({ email })
+        const userData = await User.findOne({ email })
 
-        const isPasswordCorrect = await bcrypt.compare(password, userDate.password)
-
-        if (!isPasswordCorrect) {
-            return res.json({ success: false, message: "Invaild credentials" })
+        if (!userData) {
+            return res.json({ success: false, message: "Invalid credentials" });
         }
 
-        const token = generateToken(userDate._id)
+        const isPasswordCorrect = await bcrypt.compare(password, userData.password)
 
-        res.json({ success: true, userDate, token, message: "Login Successful" })
+        if (!isPasswordCorrect) {
+            return res.json({ success: false, message: "Invalid credentials" })
+        }
+
+        const token = generateToken(userData._id)
+
+        res.json({ success: true, userData, token, message: "Login Successful" })
 
     } catch (error) {
         console.log(error.message);
