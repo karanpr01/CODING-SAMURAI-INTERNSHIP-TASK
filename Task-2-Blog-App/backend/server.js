@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from 'dotenv';
 import cors from "cors";
 import connectDB from "./config/db.js";
+import blogRoutes from "./routes/blogRoutes.js"
 
 dotenv.config(); // load env
 
@@ -25,4 +26,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
     
-})
+});
+
+// Routes
+app.use("/api/blogs", blogRoutes);
