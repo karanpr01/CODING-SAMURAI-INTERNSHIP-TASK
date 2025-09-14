@@ -78,3 +78,38 @@ export const deleteBlog = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// @desc    Toggle like/unlike for a blog
+// @route   POST /api/blogs/:id/like
+// @access  Private
+export const toggleLike = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const userId = req.user._id;
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    // check if user already liked
+    const alreadyLiked = blog.likes.some((id) => id.toString() === userId.toString());
+
+    if (alreadyLiked) {
+      // unlike: remove user id from likes array
+      blog.likes = blog.likes.filter((id) => id.toString() !== userId.toString());
+    } else {
+      // like: add user id to likes array
+      blog.likes.push(userId);
+    }
+
+    const updatedBlog = await blog.save();
+
+    // respond with likes count and whether user now likes it
+    res.json({
+      _id: updatedBlog._id,
+      likesCount: updatedBlog.likes.length,
+      likedByUser: !alreadyLiked,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
