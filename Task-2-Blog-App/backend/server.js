@@ -13,12 +13,15 @@ app.use(cors());  //allow forentend request
 app.use(express.json());  // Parse Json body
 
 // connect MongoDB
-connectDB(process.env.MONOGO_URI);
+connectDB(process.env.MONGO_URI);
 
 //Test Route
 app.get("/", (req,res) => {
     res.send("API is running...");
 });
+
+// Routes
+app.use("/api/blogs", blogRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
@@ -28,5 +31,3 @@ app.listen(PORT, () => {
     
 });
 
-// Routes
-app.use("/api/blogs", blogRoutes);
