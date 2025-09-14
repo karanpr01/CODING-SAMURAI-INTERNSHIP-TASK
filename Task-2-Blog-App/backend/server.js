@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from 'dotenv';
 import cors from "cors";
 import connectDB from "./config/db.js";
-import blogRoutes from "./routes/blogRoutes.js"
+import blogRoutes from "./routes/blogRoutes.js";
+import userRoutes from "./routes/userRoutes.js"
 
 dotenv.config(); // load env
 
@@ -22,6 +23,7 @@ app.get("/", (req,res) => {
 
 // Routes
 app.use("/api/blogs", blogRoutes);
+app.use("/api/users", userRoutes)
 
 // Start server
 const PORT = process.env.PORT || 5000;
