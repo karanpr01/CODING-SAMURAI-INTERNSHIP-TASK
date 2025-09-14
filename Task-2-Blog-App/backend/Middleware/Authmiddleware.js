@@ -1,28 +1,27 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
-const protect = async (req, res) => {
-    let token;
+const protect = async (req, res, next) => {
+  let token;
 
-    if (
-        req.header.authorization &&
-        req.header.authorization.startWith("Bearer")
-    ) {
-        try {
-            token = req.header.authorization.split(" ")[1];
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
 
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            req.user = await User.findById(decoded.id).select("-password");
-            
-        } catch (error) {
-            res.status(401).json({ message: "Not authorized, token failed"})
-        }
+      // get user from token (excluding password)
+      req.user = await User.findById(decoded.id).select("-password");
+
+      next(); // IMPORTANT → continue to next middleware/route
+    } catch (error) {
+      console.error("Token verification failed:", error.message);
+      res.status(401).json({ message: "Not authorized, token failed" });
     }
-
-    if(!token){
-        res.status(401).json({ message: "Not authorized, no token"})
-    }
+  } else {
+    res.status(401).json({ message: "Not authorized, no token" });
+  }
 };
 
 export default protect;
