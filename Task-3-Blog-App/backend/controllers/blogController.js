@@ -1,4 +1,4 @@
-import Blog from "../models/Blog.js";
+import Blog from "../models/blog.js";
 
 // @desc    Create new blog
 // @route   POST /api/blogs
@@ -108,6 +108,77 @@ export const toggleLike = async (req, res) => {
       _id: updatedBlog._id,
       likesCount: updatedBlog.likes.length,
       likedByUser: !alreadyLiked,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+// @desc    Add a comment to a blog
+// @route   POST /api/blogs/:id/comments
+// @access  Private
+export const addComment = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    const comment = {
+      user: req.user._id,
+      text: req.body.text,
+    };
+
+    blog.comments.push(comment);
+    await blog.save();
+
+    res.status(201).json({
+      message: "Comment added",
+      comments: blog.comments,
+      commentsCount: blog.comments.length,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// @desc    Delete a comment from a blog
+// @route   DELETE /api/blogs/:id/comments/:commentId
+// @access  Private
+// Delete a comment from a blog (robust, doesn't use subdoc.remove())
+export const deleteComment = async (req, res) => {
+  try {
+    const { id: blogId, commentId } = req.params;
+
+    // 1) Find the blog
+    const blog = await Blog.findById(blogId);
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    // 2) Find the comment inside the blog.comments array
+    const comment = blog.comments.find(
+      (c) => c._id.toString() === commentId.toString()
+    );
+    if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+    // 3) Authorization: allow comment owner OR blog author
+    const isCommentOwner = comment.user.toString() === req.user._id.toString();
+    const isBlogOwner = blog.author.toString() === req.user._id.toString();
+    if (!isCommentOwner && !isBlogOwner) {
+      return res.status(403).json({ message: "Not authorized to delete comment" });
+    }
+
+    // 4) Remove the comment by filtering the array
+    blog.comments = blog.comments.filter(
+      (c) => c._id.toString() !== commentId.toString()
+    );
+
+    // 5) Save the blog document
+    await blog.save();
+
+    // 6) Respond with updated comments and count
+    res.json({
+      message: "Comment deleted",
+      comments: blog.comments,
+      commentsCount: blog.comments.length,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -1,4 +1,3 @@
-// routes/blogRoutes.js
 import express from "express";
 import {
   createBlog,
@@ -6,6 +5,8 @@ import {
   updateBlog,
   deleteBlog,
   toggleLike,
+  addComment,
+  deleteComment,
 } from "../controllers/blogController.js";
 import protect from "../middleware/authMiddleware.js";
 
@@ -16,7 +17,11 @@ router.post("/", protect, createBlog);
 router.put("/:id", protect, updateBlog);
 router.delete("/:id", protect, deleteBlog);
 
-// NEW: toggle like
+// Toggle likes
 router.post("/:id/like", protect, toggleLike);
+
+// comments
+router.post("/:id/comments", protect, addComment);
+router.delete("/:id/comments/:commentId", protect, deleteComment);
 
 export default router;
