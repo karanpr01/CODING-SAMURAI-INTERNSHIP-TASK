@@ -5,16 +5,18 @@ import Blog from "../models/blog.js";
 // @access  Private
 export const createBlog = async (req, res) => {
   try {
-    const blog = await Blog.create({
-      title: req.body.title,
-      content: req.body.content,
-      tags: req.body.tags,
-      author: req.user._id, // attach logged-in user
+    const { title, content, tags, category } = req.body;  // ✅ include category
+    const blog = new Blog({
+      title,
+      content,
+      tags,
+      category, // ✅ save category
+      author: req.user._id,
     });
-
+    await blog.save();
     res.status(201).json(blog);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -23,7 +25,30 @@ export const createBlog = async (req, res) => {
 // @access  Public
 export const getBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find().populate("author", "name email");
+    const { category, tag, search } = req.query;
+
+    let filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (tag) {
+      filter.tags = { $in: [tag] }; // check if tag exists in array
+    }
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { content: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const blogs = await Blog.find(filter)
+      .populate("author", "username email")
+      .populate("comments.user", "username email")
+      .sort({ createdAt: -1 });
+
     res.json(blogs);
   } catch (err) {
     res.status(500).json({ message: err.message });
