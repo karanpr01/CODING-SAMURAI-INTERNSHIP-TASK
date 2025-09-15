@@ -3,15 +3,16 @@ import dotenv from 'dotenv';
 import cors from "cors";
 import connectDB from "./config/db.js";
 import blogRoutes from "./routes/blogRoutes.js";
-import userRoutes from "./routes/userRoutes.js"
+import userRoutes from "./routes/userRoutes.js";
+
 
 dotenv.config(); // load env
-
 const app = express();
 
 // Middleware
 app.use(cors());  //allow forentend request
 app.use(express.json());  // Parse Json body
+app.use(express.urlencoded({ extended: true }));
 
 // connect MongoDB
 connectDB(process.env.MONGO_URI);
@@ -19,6 +20,13 @@ connectDB(process.env.MONGO_URI);
 //Test Route
 app.get("/", (req,res) => {
     res.send("API is running...");
+});
+
+app.get("/test-cloudinary", (req, res) => {
+  res.json({
+    cloud_name: cloudinary.config().cloud_name,
+    api_key: cloudinary.config().api_key ? "Loaded ✅" : "Missing ❌",
+  });
 });
 
 // Routes

@@ -5,18 +5,21 @@ import Blog from "../models/blog.js";
 // @access  Private
 export const createBlog = async (req, res) => {
   try {
-    const { title, content, tags, category } = req.body;  // ✅ include category
+    const { title, content, tags, category } = req.body;
+
     const blog = new Blog({
       title,
       content,
-      tags,
-      category, // ✅ save category
+      tags: tags ? tags.split(",") : [],
+      category,
       author: req.user._id,
+      image: req.file ? req.file.path : null, // Cloudinary URL
     });
-    await blog.save();
-    res.status(201).json(blog);
+
+    const createdBlog = await blog.save();
+    res.status(201).json(createdBlog);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

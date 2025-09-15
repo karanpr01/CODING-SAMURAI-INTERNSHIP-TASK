@@ -14,6 +14,7 @@ const blogSchema = new mongoose.Schema(
     content: { type: String, required: [true, "Content is required"] },
     tags: [String],
     category: { type: String, required: false },
+    image: { type: String }, // Cloudinary URL
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // array of user ids who liked
     comments:[commentSchema],

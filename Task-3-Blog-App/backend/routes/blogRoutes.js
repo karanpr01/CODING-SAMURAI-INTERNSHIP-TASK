@@ -8,12 +8,13 @@ import {
   addComment,
   deleteComment,
 } from "../controllers/blogController.js";
-import protect from "../middleware/authMiddleware.js";
+import protect from "../Middleware/Authmiddleware.js";
+import upload  from "../Middleware/uploadmiddleware.js"
 
 const router = express.Router();
 
 router.get("/", getBlogs);
-router.post("/", protect, createBlog);
+router.post("/", protect, upload.single("image"), createBlog);
 router.put("/:id", protect, updateBlog);
 router.delete("/:id", protect, deleteBlog);
 
