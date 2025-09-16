@@ -1,42 +1,23 @@
 import express from "express";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
-import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 
+dotenv.config();
 
-dotenv.config(); // load env
 const app = express();
+app.use(cors());
+app.use(express.json({ limit: "5mb" }));
 
-// Middleware
-app.use(cors());  //allow forentend request
-app.use(express.json());  // Parse Json body
-app.use(express.urlencoded({ extended: true }));
-
-// connect MongoDB
 connectDB(process.env.MONGO_URI);
 
-//Test Route
-app.get("/", (req,res) => {
-    res.send("API is running...");
-});
-
-app.get("/test-cloudinary", (req, res) => {
-  res.json({
-    cloud_name: cloudinary.config().cloud_name,
-    api_key: cloudinary.config().api_key ? "Loaded ✅" : "Missing ❌",
-  });
-});
-
-// Routes
+// mount routes
+app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
-app.use("/api/users", userRoutes)
 
-// Start server
+app.get("/", (req, res) => res.send("API running"));
+
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
-    
-});
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
