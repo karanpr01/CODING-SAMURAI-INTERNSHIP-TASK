@@ -19,5 +19,7 @@ app.use("/api/blogs", blogRoutes);
 
 app.get("/", (req, res) => res.send("API running"));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+if (process.env.NODE_ENV !== "production") {
+    const PORT = process.env.PORT || 5000;
+    server.listen(PORT, () => console.log("server is running on PORT:" + PORT));
+}
