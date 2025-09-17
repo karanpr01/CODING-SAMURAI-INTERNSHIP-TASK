@@ -1,19 +1,52 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import API from "../api/axiosClient";
+import BlogCard from "../components/BlogCard";
+import { Box, TextField, Grid, CircularProgress, Chip } from "@mui/material";
 
-const Home = () => {
+export default function Home() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [q, setQ] = useState("");
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const res = await API.get("/blogs");
+      setBlogs(res.data);
+      const allTags = Array.from(new Set(res.data.flatMap((b) => b.tags || [])));
+      setTags(allTags);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filtered = blogs.filter((b) => b.title.toLowerCase().includes(q.toLowerCase()));
+
   return (
-    <div className="max-w-6xl mx-auto mt-10 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Welcome to Blogify</h1>
-        <Link to="/blogs" className="text-indigo-600">Explore Blogs →</Link>
-      </div>
+    <Box>
+      <TextField fullWidth placeholder="Search titles..." value={q} onChange={(e) => setQ(e.target.value)} sx={{ mb: 2 }} />
 
-      <div className="bg-white p-6 rounded-md shadow">
-        <p>Start writing, sharing, and learning. Use the top nav to login or register.</p>
-      </div>
-    </div>
+      <Box sx={{ mb: 2 }}>
+        {tags.map((t) => <Chip key={t} label={t} sx={{ mr: 1, mb: 1 }} onClick={() => setQ(t)} />)}
+      </Box>
+
+      {loading ? <CircularProgress /> : (
+        <Grid container spacing={3}>
+          {blogs.map((blog, idx) => (
+            <Grid key={idx} size={{ xs: 12, md: 6, lg: 4 }}>
+              <BlogCard blog={blog} />
+            </Grid>
+          ))}
+        </Grid>
+
+      )}
+    </Box>
   );
-};
-
-export default Home;
+}

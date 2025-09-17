@@ -31,15 +31,30 @@ export const getBlogs = async (req, res) => {
 };
 
 // get single
+// get single with likes + comments count
 export const getBlogById = async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id).populate("author", "name email");
-    if (!blog) return res.status(404).json({ message: "Not found" });
-    res.json(blog);
+    // populate author details and optionally comments (if you have a Comment model with refs)
+    const blog = await Blog.findById(req.params.id)
+      .populate("author", "name email")
+      .populate("comments.user", "name email"); // only if comments exist in schema
+
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+    res.json({
+      ...blog._doc,
+      likesCount: blog.likes?.length || 0,
+      commentsCount: blog.comments?.length || 0,
+    });
   } catch (err) {
+    // handle invalid ObjectId gracefully
+    if (err.name === "CastError") {
+      return res.status(400).json({ message: "Invalid blog ID" });
+    }
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // update
 export const updateBlog = async (req, res) => {
